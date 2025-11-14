@@ -21,9 +21,30 @@ export function createProduct(req, res) {
         .catch(err => res.status(400).json({ error: err.message }));
 }
 
-// DELETE product by name
+// DELETE product 
 export function deleteProduct(req, res) {
-    Product.deleteOne({ name: req.body.name })
+    Product.deleteOne({ name: req.params.name }) //parameterized route
         .then(() => res.json({ message: 'Product deleted successfully!' }))
         .catch(err => res.status(400).json({ error: err.message }));
+}
+
+
+
+
+// GET product by name
+export function getProductByName(req, res) {
+    const productName = req.params.name;
+
+    Product.find({ name: productName })
+        .then(productList => {
+            if (productList.length === 0) {
+                return res.status(404).json({ message: 'Product not found' });
+            }
+
+            // If product exists
+            res.json({ list: productList });
+        })
+        .catch(err => {
+            res.status(400).json({ error: err.message });
+        });
 }

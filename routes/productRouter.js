@@ -1,11 +1,14 @@
 import express from 'express';
-import {createProduct, getProducts, deleteProduct} from '../controllers/productController.js';   
+import {getProductByName,createProduct, getProducts, deleteProduct} from '../controllers/productController.js';   
 
 //create router productRouter
 const productRouter = express.Router();
 
 productRouter.get("/", getProducts);
 productRouter.post("/", createProduct);
-productRouter.delete ("/",deleteProduct);
+
+//delete product by name - parameterized route
+productRouter.delete ("/:name",deleteProduct);
+productRouter.get("/:name", getProductByName);
 
 export default productRouter;
