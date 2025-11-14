@@ -1,21 +1,14 @@
 import express from 'express';
+import { deleteStudent,getStudents, createStudent } from '../controllers/studentController.js';   
+
 
 //create router studentRouter
 const studentRouter = express.Router();
 
 
+studentRouter.get("/", getStudents);
+studentRouter.post("/", createStudent);
+studentRouter.delete ("/",deleteStudent);
 
-studentRouter.get("/", (req, res) => {
-    console.log('GET request received at /students');   
-
-    res.json({ message: 'students get route working!' });
-});
-
-
-studentRouter.post("/", (req, res) => {
-    console.log('POST request received at /students');
-
-    res.json({ message: 'students post route working!' });    
-});
 
 export default studentRouter;

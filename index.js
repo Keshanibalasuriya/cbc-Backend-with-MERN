@@ -1,7 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import mongoose from 'mongoose';
-import Student from './models/student.js';
 import studentRouter from './routes/studentRouter.js';
 import productRouter from './routes/productRouter.js';
 
@@ -21,8 +20,8 @@ mongoose.connect(mongoDB_url, {
 app.use(bodyParser.json());
 
 // Use Routers
-app.use('/products', productRouter);
 app.use('/students', studentRouter);
+app.use('/products', productRouter); 
 
 
 app.listen(PORT, () => {
