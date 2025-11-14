@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import mongoose from 'mongoose';
 import Student from './models/student.js';
+import studentRouter from './routes/studentRouter.js';
 
 const app = express();
 const PORT = 3000;
@@ -18,31 +19,8 @@ mongoose.connect(mongoDB_url, {
 
 app.use(bodyParser.json());
 
-// Schema + Model (IMPORTANT: put outside routes)
+app.use('/students', studentRouter);
 
-
-// GET route
-app.get('/', (req, res) => {
-    console.log('Request received at /');
-    res.send("Hello");
-});
-
-// POST route
-app.post("/", (req, res) => {
-    const newStudent = new Student({
-        name: req.body.name,
-        age: req.body.age,
-        grade: req.body.grade
-    });
-
-    newStudent.save()
-        .then(() => {
-            res.status(201).send('Student record created successfully');
-        })
-        .catch((error) => {
-            res.status(500).send('Error creating student record: ' + error);
-        });
-});
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
