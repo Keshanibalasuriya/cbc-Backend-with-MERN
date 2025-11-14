@@ -8,14 +8,14 @@ const studentRouter = express.Router();
 studentRouter.get("/", (req, res) => {
     console.log('GET request received at /students');   
 
-    res.json({ message: 'students route working!' });
+    res.json({ message: 'students get route working!' });
 });
 
 
 studentRouter.post("/", (req, res) => {
     console.log('POST request received at /students');
 
-    res.json({ message: 'students route working!' });    
+    res.json({ message: 'students post route working!' });    
 });
 
 export default studentRouter;
