@@ -1,31 +1,49 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import mongoose from 'mongoose';
-
+import Student from './models/student.js';
 
 const app = express();
-const PORT = 3000;      
+const PORT = 3000;
 
-const mongoDB_url='mongodb+srv://admin:1234@cluster0.5tomp5w.mongodb.net/?appName=Cluster0';
+const mongoDB_url = 'mongodb+srv://admin:1234@cluster0.5tomp5w.mongodb.net/?appName=Cluster0';
 
-mongoose.connect(mongoDB_url);
-const connection = mongoose.connection;
-
-connection.once('open', () => {
-    console.log('MongoDB database connection established successfully');
-});
-
-
-
+// MongoDB Connection
+mongoose.connect(mongoDB_url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log('MongoDB database connection established successfully'))
+.catch(err => console.log("MongoDB error:", err));
 
 app.use(bodyParser.json());
 
+// Schema + Model (IMPORTANT: put outside routes)
+
+
+// GET route
 app.get('/', (req, res) => {
     console.log('Request received at /');
     res.send("Hello");
 });
 
+// POST route
+app.post("/", (req, res) => {
+    const newStudent = new Student({
+        name: req.body.name,
+        age: req.body.age,
+        grade: req.body.grade
+    });
+
+    newStudent.save()
+        .then(() => {
+            res.status(201).send('Student record created successfully');
+        })
+        .catch((error) => {
+            res.status(500).send('Error creating student record: ' + error);
+        });
+});
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
