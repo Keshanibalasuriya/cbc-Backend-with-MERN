@@ -13,6 +13,9 @@ export function getProducts(req, res) {
 
 // POST create product
 export function createProduct(req, res) {
+
+    //console.log(req.user); // Log the authenticated user info   
+
     const productData = req.body;
     const newProduct = new Product(productData);
 
