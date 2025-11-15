@@ -31,20 +31,16 @@ export function deleteProduct(req, res) {
 
 
 
-// GET product by name
 export function getProductByName(req, res) {
-    const productName = req.params.name;
+  const productName = req.params.name;
 
-    Product.find({ name: productName })
-        .then(productList => {
-            if (productList.length === 0) {
-                return res.status(404).json({ message: 'Product not found' });
-            }
-
-            // If product exists
-            res.json({ list: productList });
-        })
-        .catch(err => {
-            res.status(400).json({ error: err.message });
-        });
+  Product.find({ name: productName })
+    .then(productList => {
+      if (productList.length === 0) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      res.json({ list: productList });
+    })
+    .catch(err => res.status(400).json({ error: err.message }));
 }
+

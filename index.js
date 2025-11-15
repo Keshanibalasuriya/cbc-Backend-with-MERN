@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import studentRouter from './routes/studentRouter.js';
 import productRouter from './routes/productRouter.js';
+import userRouter from './routes/userRouter.js';
 
 const app = express();
 const PORT = 3000;
@@ -21,8 +22,8 @@ app.use(bodyParser.json());
 
 // Use Routers
 app.use('/students', studentRouter);
-app.use('/products', productRouter); 
-
+app.use('/products', productRouter);
+app.use('/users', userRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
