@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import studentRouter from './routes/studentRouter.js';
 import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRouter.js';
-import jwt from 'jsonwebtoken';
+import auth from './middlewares/auth.js';
 
 const app = express();
 const PORT = 3000;
@@ -21,34 +21,36 @@ mongoose.connect(mongoDB_url, {
 
 // middlewares
 app.use(bodyParser.json());
+app.use(auth);
 
-// JWT Middleware
-app.use((req, res, next) => {
 
-    // Allow public routes
-    if (req.path === "/users/login" || req.path === "/users/register") {
-        return next();
-    }
+// // JWT Middleware
+// app.use((req, res, next) => {
 
-    const token = req.header("Authorization")?.replace("Bearer ", "");
+//     // Allow public routes
+//     if (req.path === "/users/login" || req.path === "/users/register") {
+//         return next();
+//     }
 
-    console.log("Incoming Token:", token);
+//     const token = req.header("Authorization")?.replace("Bearer ", "");
 
-    if (!token) {
-        return res.status(401).json({ message: "No token provided" });
-    }
+//     console.log("Incoming Token:", token);
 
-    jwt.verify(token, "your_jwt_secret_key", (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: "Invalid token" });
-        }
-        else{
-        console.log("Decoded User:", decoded);
-        req.user = decoded; // pass decoded user data to next routes
-        }
-        next();
-    });
-});
+//     if (!token) {
+//         return res.status(401).json({ message: "No token provided" });
+//     }
+
+//     jwt.verify(token, "your_jwt_secret_key", (err, decoded) => {
+//         if (err) {
+//             return res.status(401).json({ message: "Invalid token" });
+//         }
+//         else{
+//         console.log("Decoded User:", decoded);
+//         req.user = decoded; // pass decoded user data to next routes
+//         }
+//         next();
+//     });
+// });
 
 
 // Use Routers
@@ -59,3 +61,4 @@ app.use('/users', userRouter);
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+

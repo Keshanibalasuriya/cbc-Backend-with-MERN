@@ -49,6 +49,7 @@ export function loginUser(req, res) {
                 "your_jwt_secret_key",
             
         );
+        console.log("Generated Token:", token);
 
             // Send token to client
             return res.status(200).json({
