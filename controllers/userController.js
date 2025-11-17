@@ -8,6 +8,14 @@ export function createUser(req, res) {
 
     const newUserData = req.body;
 
+    // Restrict creation of admin accounts
+    if(newUserData.type === "admin" ){
+    if(req.type != "admin" || req.type == null ){
+        return  res.status(403).json({ message: "Please Login as administrator to create admin accounts" });
+    }
+}
+
+
     // Hash password
     newUserData.password = bcrypt.hashSync(newUserData.password, 10);
 
@@ -61,5 +69,18 @@ export function loginUser(req, res) {
         .catch(err => res.status(400).json({ error: err.message }));
 }
 
+//User checking
+export function isCustomer(req, res) {
+    if(req.user==null || req.user.type !== "customer"){ {
+        return false;
+    }
+}
 
 
+
+
+
+//admin  { "email": "admin@gmail.com",  "password": "Admin@123"}
+//user   {   "email": "user@gmail.com",  "password": "user@123"}
+
+}
