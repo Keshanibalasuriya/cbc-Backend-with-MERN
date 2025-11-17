@@ -2,8 +2,10 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import mongoose from 'mongoose';
 import userRouter from './routes/userRouter.js';
+import productRouter from './routes/productRouter.js';
 import auth from './middlewares/auth.js';
 import dotenv from 'dotenv';
+
 
 dotenv.config();
 
@@ -22,11 +24,12 @@ mongoose.connect(mongoDB_url, {
 
 // middlewares
 app.use(bodyParser.json());
-//app.use(auth);
+app.use(auth);
 
 // Use Routers
 
 app.use('/users', userRouter);
+app.use('/products', productRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

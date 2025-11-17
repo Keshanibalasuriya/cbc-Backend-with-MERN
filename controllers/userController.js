@@ -71,16 +71,25 @@ export function loginUser(req, res) {
 
 //User checking
 export function isCustomer(req, res) {
-    if(req.user==null || req.user.type !== "customer"){ {
+    if(req.user==null || req.user.type !== "customer"){
+        {
+        return false;
+        }
+}
+}
+//admin checking
+export function isAdmin(req, res) {
+    if(req.user==null || req.user.type !== "admin"){ {
         return false;
     }
+    }
+
+
 }
-
-
 
 
 
 //admin  { "email": "admin@gmail.com",  "password": "Admin@123"}
 //user   {   "email": "user@gmail.com",  "password": "user@123"}
 
-}
+
