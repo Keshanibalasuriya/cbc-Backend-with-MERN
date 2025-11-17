@@ -46,7 +46,7 @@ export function loginUser(req, res) {
                     type: user.type,
                     profilePicture: user.profilePicture
                 },
-                "your_jwt_secret_key",
+                process.env.JWT_SECRET_KEY,
             
         );
         console.log("Generated Token:", token);
@@ -60,3 +60,6 @@ export function loginUser(req, res) {
         })
         .catch(err => res.status(400).json({ error: err.message }));
 }
+
+
+

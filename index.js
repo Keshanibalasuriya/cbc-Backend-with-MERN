@@ -5,11 +5,14 @@ import studentRouter from './routes/studentRouter.js';
 import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRouter.js';
 import auth from './middlewares/auth.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
-const mongoDB_url = 'mongodb+srv://admin:1234@cluster0.5tomp5w.mongodb.net/?appName=Cluster0';
+const mongoDB_url =process.env.MONGO_DB_URL;
 
 // MongoDB Connection
 mongoose.connect(mongoDB_url, {
@@ -24,7 +27,7 @@ app.use(bodyParser.json());
 app.use(auth);
 
 
-// // JWT Middleware
+// JWT Middleware
 // app.use((req, res, next) => {
 
 //     // Allow public routes
@@ -51,6 +54,7 @@ app.use(auth);
 //         next();
 //     });
 // });
+
 
 
 // Use Routers
