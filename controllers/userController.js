@@ -2,19 +2,18 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-
 // Create new user
 export function createUser(req, res) {
-
     const newUserData = req.body;
 
     // Restrict creation of admin accounts
-    if(newUserData.type === "admin" ){
-    if(req.type != "admin" || req.type == null ){
-        return  res.status(403).json({ message: "Please Login as administrator to create admin accounts" });
+    if (newUserData.type === "admin") {
+        if (!req.user || req.user.type !== "admin") {
+            return res.status(403).json({
+                message: "Please login as administrator to create admin accounts"
+            });
+        }
     }
-}
-
 
     // Hash password
     newUserData.password = bcrypt.hashSync(newUserData.password, 10);
@@ -26,20 +25,16 @@ export function createUser(req, res) {
         .catch(err => res.status(400).json({ error: err.message }));
 }
 
-
 // Login user
 export function loginUser(req, res) {
-
     User.findOne({ email: req.body.email })
         .then(user => {
-
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
             }
 
             // Compare passwords
             const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
-
             if (!isPasswordValid) {
                 return res.status(401).json({ message: "Invalid password" });
             }
@@ -55,41 +50,27 @@ export function loginUser(req, res) {
                     profilePicture: user.profilePicture
                 },
                 process.env.JWT_SECRET_KEY,
-            
-        );
-        console.log("Generated Token:", token);
+                { expiresIn: "1d" }
+            );
 
-            // Send token to client
+            console.log("Generated Token:", token);
+
+            // Send response
             return res.status(200).json({
                 message: "Login successful",
-                token: token
+                token: token,
+                userType: user.type
             });
-
         })
         .catch(err => res.status(400).json({ error: err.message }));
 }
 
-//User checking
-export function isCustomer(req, res) {
-    if(req.user==null || req.user.type !== "customer"){
-        {
-        return false;
-        }
-}
-}
-//admin checking
-export function isAdmin(req, res) {
-    if(req.user==null || req.user.type !== "admin"){ {
-        return false;
-    }
-    }
-
-
+// Check if logged user is customer
+export function isCustomer(req) {
+    return req.user && req.user.type === "user";
 }
 
-
-
-//admin  { "email": "admin@gmail.com",  "password": "Admin@123"}
-//user   {   "email": "user@gmail.com",  "password": "user@123"}
-
-
+// Check if logged user is admin
+export function isAdmin(req) {
+    return req.user && req.user.type === "admin";
+}

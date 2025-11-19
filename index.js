@@ -1,10 +1,12 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import mongoose from 'mongoose';
+import orderRouter from './routes/orderRouter.js';
 import userRouter from './routes/userRouter.js';
 import productRouter from './routes/productRouter.js';
 import auth from './middlewares/auth.js';
 import dotenv from 'dotenv';
+
 
 
 dotenv.config();
@@ -30,6 +32,7 @@ app.use(auth);
 
 app.use('/users', userRouter);
 app.use('/products', productRouter);
+app.use('/orders', orderRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

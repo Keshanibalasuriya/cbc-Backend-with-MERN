@@ -1,14 +1,17 @@
 import Product from "../models/product.js";
+import { isAdmin } from "../controllers/userController.js";
 
-// Create new product
+// Create new product (Admins ONLY)
 export function createProduct(req, res) {
 
-    if (req.user == null) {
-        return res.status(401).json({ error: 'Unauthorized ,No Logged User' });
+    // Check login
+    if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized. No logged user.' });
     }
 
-    if (req.user.isAdmin) {
-        return res.status(403).json({ error: 'Forbidden , Admins Only' });
+    // Allow only admins
+    if (!isAdmin(req)) {
+        return res.status(403).json({ error: 'Forbidden. Admins only.' });
     }
 
     const newProduct = new Product(req.body);
@@ -17,7 +20,6 @@ export function createProduct(req, res) {
         .then(() => res.json({ message: 'Product added successfully!' }))
         .catch(err => res.status(400).json({ error: err.message }));
 }
-
 
 
 //get products
