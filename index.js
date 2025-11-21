@@ -6,7 +6,7 @@ import userRouter from './routes/userRouter.js';
 import productRouter from './routes/productRouter.js';
 import auth from './middlewares/auth.js';
 import dotenv from 'dotenv';
-
+import cors from 'cors';
 
 
 dotenv.config();
@@ -26,13 +26,15 @@ mongoose.connect(mongoDB_url, {
 
 // middlewares
 app.use(bodyParser.json());
-app.use(auth);
+app.use(cors());
+//app.use(auth);
+
 
 // Use Routers
 
-app.use('/users', userRouter);
-app.use('/products', productRouter);
-app.use('/orders', orderRouter);
+app.use('/api/users', userRouter);
+app.use('/api/products', productRouter);
+app.use('/api/orders', orderRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
