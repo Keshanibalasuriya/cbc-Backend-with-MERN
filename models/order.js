@@ -9,7 +9,7 @@ const orderSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true 
-    },
+    }, 
     orderedItems: [
         { 
             name: {
